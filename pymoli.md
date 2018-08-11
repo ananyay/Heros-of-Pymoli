@@ -2,7 +2,9 @@
 
 - The percentage of players in the Age bracket(20-24) accounts for 44.79% of the entire sample with total purchase value $1,114.06, but surprisingly Average purchase total per person is only 4.32$ , which is less than the average of players in the Age bracket(35-39) with  $4.76  which accounts only 5.38% of the entire sample.
 - While the total purchase count is 780, the number of unique players is only 573. There is a good amount of repeat purchasers for the Heroes of Pymoli game.
--
+- The item (Oathbreaker, Last Hope of the Breaking Storm) is the most profitable as well as the most popular item 
+
+
 
 
 
@@ -28,7 +30,7 @@ pymoli_df.head()
 
 
 
-
+<div>
 
 <table border="1" class="dataframe">
   <thead>
@@ -104,21 +106,10 @@ pymoli_df.head()
 ```python
 # calculate total players count ,by extracting the unique player list by using .unique() and counting them by using len()
 Total_players = len(pymoli_df["SN"].unique())
-Total_players
-```
-
-
-
-
-    576
-
-
-
-
-```python
 # create a data frame with total_players count 
 player_count = pd.DataFrame({"Total players":Total_players},index = [0])
 player_count
+
 
 ```
 
@@ -126,7 +117,6 @@ player_count
 
 
 <div>
-
 
 <table border="1" class="dataframe">
   <thead>
@@ -174,6 +164,7 @@ Purchasing_Analysis
 
 
 
+<div>
 
 <table border="1" class="dataframe">
   <thead>
@@ -222,6 +213,7 @@ gender_summary
 
 
 
+<div>
 
 <table border="1" class="dataframe">
   <thead>
@@ -786,5 +778,3 @@ most_popular_items.head()
   </tbody>
 </table>
 </div>
-
-
