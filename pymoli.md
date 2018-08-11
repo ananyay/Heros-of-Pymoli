@@ -1,5 +1,6 @@
 # Heros-of-Pymoli
 
+
 ```python
 # Importing Dependencies 
 import pandas as pd 
@@ -230,153 +231,22 @@ Purchasing_Analysis
 
 
 ```python
-                      # Gender Demographs #
-#displayed table again for my reference
-pymoli_df.head()
-
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Purchase ID</th>
-      <th>SN</th>
-      <th>Age</th>
-      <th>Gender</th>
-      <th>Item ID</th>
-      <th>Item Name</th>
-      <th>Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>Lisim78</td>
-      <td>20</td>
-      <td>Male</td>
-      <td>108</td>
-      <td>Extraction, Quickblade Of Trembling Hands</td>
-      <td>3.53</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>Lisovynya38</td>
-      <td>40</td>
-      <td>Male</td>
-      <td>143</td>
-      <td>Frenzied Scimitar</td>
-      <td>1.56</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>Ithergue48</td>
-      <td>24</td>
-      <td>Male</td>
-      <td>92</td>
-      <td>Final Critic</td>
-      <td>4.88</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3</td>
-      <td>Chamassasya86</td>
-      <td>24</td>
-      <td>Male</td>
-      <td>100</td>
-      <td>Blindscythe</td>
-      <td>3.27</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>4</td>
-      <td>Iskosia90</td>
-      <td>23</td>
-      <td>Male</td>
-      <td>131</td>
-      <td>Fury</td>
-      <td>1.44</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
                              # Gender Demographics #
 # Calcualting 
 # Count of Male Players
 # Count of Female Players
 # Count of Other / Non-Disclosed
 
-total_count = pymoli_df["Gender"].value_counts()
-total_count
+gender_grouped = pymoli_df.groupby("Gender")
+unique_members = gender_grouped["SN"].nunique()
+percentage_of_players = (unique_members/Total_players)*100
 
-```
+# Create a data frame with the summary gender data
+gender_summary = pd.DataFrame({"Percentage of Players": percentage_of_players,"Total Counts": unique_members})
 
+gender_summary["Percentage of Players"] = gender_summary["Percentage of Players"].map("{:.2f}".format)
 
-
-
-    Male                     652
-    Female                   113
-    Other / Non-Disclosed     15
-    Name: Gender, dtype: int64
-
-
-
-
-```python
-# Calculating                   
-# Percentage of Male Players
-# Percentage of Female Players
-# Percentage and Count of Other / Non-Disclosed
-
-Percent_of_players = (pymoli_df["Gender"].value_counts()/Total_players)*100
-Percent_of_players
-```
-
-
-
-
-    Male                     113.194444
-    Female                    19.618056
-    Other / Non-Disclosed      2.604167
-    Name: Gender, dtype: float64
-
-
-
-
-```python
-# Gender Demographics summary DataFrame to hold the total count and percentage results 
-
-summary_table = pd.DataFrame({"Percentage of players":Percent_of_players,"Total Count":total_count})
-summary_table["Percentage of players"] = summary_table["Percentage of players"] .map("{:.2f}".format)
-
-summary_table
-             
-
+gender_summary
 ```
 
 
@@ -400,25 +270,30 @@ summary_table
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Percentage of players</th>
-      <th>Total Count</th>
+      <th>Percentage of Players</th>
+      <th>Total Counts</th>
+    </tr>
+    <tr>
+      <th>Gender</th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>Male</th>
-      <td>113.19</td>
-      <td>652</td>
+      <th>Female</th>
+      <td>14.06</td>
+      <td>81</td>
     </tr>
     <tr>
-      <th>Female</th>
-      <td>19.62</td>
-      <td>113</td>
+      <th>Male</th>
+      <td>84.03</td>
+      <td>484</td>
     </tr>
     <tr>
       <th>Other / Non-Disclosed</th>
-      <td>2.60</td>
-      <td>15</td>
+      <td>1.91</td>
+      <td>11</td>
     </tr>
   </tbody>
 </table>
@@ -434,7 +309,7 @@ gender_grouped = pymoli_df.groupby("Gender")
 purchase_count = gender_grouped["Age"].count()
 avg_purchase = gender_grouped["Price"].mean()
 total_purchase_value = gender_grouped["Price"].sum()
-avg_purchase_person =(gender_grouped["Price"].sum()/gender_grouped["Age"].count())
+avg_purchase_person =(gender_grouped["Price"].sum()/unique_members)
 
 # create a summary DataFrame to hold the above results 
 summary_df = pd.DataFrame({"Purchase count":purchase_count,"Average Purchase Price":avg_purchase,
@@ -488,21 +363,21 @@ summary_df.head()
       <td>113</td>
       <td>$3.20</td>
       <td>$361.94</td>
-      <td>$3.20</td>
+      <td>$4.47</td>
     </tr>
     <tr>
       <th>Male</th>
       <td>652</td>
       <td>$3.02</td>
       <td>$1,967.64</td>
-      <td>$3.02</td>
+      <td>$4.07</td>
     </tr>
     <tr>
       <th>Other / Non-Disclosed</th>
       <td>15</td>
       <td>$3.35</td>
       <td>$50.19</td>
-      <td>$3.35</td>
+      <td>$4.56</td>
     </tr>
   </tbody>
 </table>
@@ -524,13 +399,13 @@ pymoli_df
 # do a groupby on Age Group 
 pymoli_age_grouped = pymoli_df.groupby("Age Group")
 #calculate total count and percenatge of players by age category
-total_count = pymoli_age_grouped["SN"].count()
-Percent_of_players = (total_count/Total_players)*100
+unique_members = pymoli_age_grouped["SN"].nunique()
+Percent_of_players = (unique_members/Total_players)*100
 # create a DataFrame to hold the above results 
-age_demographics = pd.DataFrame({"Percentage of players":Percent_of_players,"Total count":total_count})
+age_demographics = pd.DataFrame({"Percentage of players":Percent_of_players,"Total count":unique_members})
 # change the index to none and do clean formatting 
 age_demographics.index.name = None
-age_demographics["Percentage of players"] = age_demographics["Percentage of players"].map("{:.2f}".format)
+age_demographics["Percentage of players"] = age_demographics["Percentage of players"].map("${:.2f}".format)
 age_demographics
 # Displaying Age Demographics table #
 ```
@@ -563,43 +438,43 @@ age_demographics
   <tbody>
     <tr>
       <th>&lt;10</th>
-      <td>3.99</td>
-      <td>23</td>
+      <td>$2.95</td>
+      <td>17</td>
     </tr>
     <tr>
       <th>10-14</th>
-      <td>4.86</td>
-      <td>28</td>
+      <td>$3.82</td>
+      <td>22</td>
     </tr>
     <tr>
       <th>15-19</th>
-      <td>23.61</td>
-      <td>136</td>
+      <td>$18.58</td>
+      <td>107</td>
     </tr>
     <tr>
       <th>20-24</th>
-      <td>63.37</td>
-      <td>365</td>
+      <td>$44.79</td>
+      <td>258</td>
     </tr>
     <tr>
       <th>25-29</th>
-      <td>17.53</td>
-      <td>101</td>
+      <td>$13.37</td>
+      <td>77</td>
     </tr>
     <tr>
       <th>30-34</th>
-      <td>12.67</td>
-      <td>73</td>
+      <td>$9.03</td>
+      <td>52</td>
     </tr>
     <tr>
       <th>35-39</th>
-      <td>7.12</td>
-      <td>41</td>
+      <td>$5.38</td>
+      <td>31</td>
     </tr>
     <tr>
       <th>40+</th>
-      <td>2.26</td>
-      <td>13</td>
+      <td>$2.08</td>
+      <td>12</td>
     </tr>
   </tbody>
 </table>
@@ -615,7 +490,7 @@ age_demographics
 purchase_count = pymoli_age_grouped["Age"].count()
 avg_purchase = pymoli_age_grouped["Price"].mean()
 total_purchase_value = pymoli_age_grouped["Price"].sum()
-avg_purchase_person =(pymoli_age_grouped["Price"].sum()/pymoli_age_grouped["Age"].count())
+avg_purchase_person =(pymoli_age_grouped["Price"].sum()/unique_members)
 
 # create a DataFrame to hold the above results 
 Purchase_analysis_age = pd.DataFrame({"Purchase count":purchase_count,"Average Purchase Price":avg_purchase,
@@ -662,56 +537,56 @@ Purchase_analysis_age
       <td>23</td>
       <td>$3.35</td>
       <td>$77.13</td>
-      <td>$3.35</td>
+      <td>$4.54</td>
     </tr>
     <tr>
       <th>10-14</th>
       <td>28</td>
       <td>$2.96</td>
       <td>$82.78</td>
-      <td>$2.96</td>
+      <td>$3.76</td>
     </tr>
     <tr>
       <th>15-19</th>
       <td>136</td>
       <td>$3.04</td>
       <td>$412.89</td>
-      <td>$3.04</td>
+      <td>$3.86</td>
     </tr>
     <tr>
       <th>20-24</th>
       <td>365</td>
       <td>$3.05</td>
       <td>$1,114.06</td>
-      <td>$3.05</td>
+      <td>$4.32</td>
     </tr>
     <tr>
       <th>25-29</th>
       <td>101</td>
       <td>$2.90</td>
       <td>$293.00</td>
-      <td>$2.90</td>
+      <td>$3.81</td>
     </tr>
     <tr>
       <th>30-34</th>
       <td>73</td>
       <td>$2.93</td>
       <td>$214.00</td>
-      <td>$2.93</td>
+      <td>$4.12</td>
     </tr>
     <tr>
       <th>35-39</th>
       <td>41</td>
       <td>$3.60</td>
       <td>$147.67</td>
-      <td>$3.60</td>
+      <td>$4.76</td>
     </tr>
     <tr>
       <th>40+</th>
       <td>13</td>
       <td>$2.94</td>
       <td>$38.24</td>
-      <td>$2.94</td>
+      <td>$3.19</td>
     </tr>
   </tbody>
 </table>
